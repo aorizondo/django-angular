@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import url, include
+from django.urls import re_path as url, include 
 from django.views.generic import View
 from django.http import HttpResponse
 from django.template import RequestContext, Template

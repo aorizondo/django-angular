@@ -1,6 +1,6 @@
 import warnings
 from django.urls import reverse
-from django.conf.urls import url
+from django.urls import re_path as url 
 from django.http.response import HttpResponsePermanentRedirect
 
 

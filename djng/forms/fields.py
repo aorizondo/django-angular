@@ -11,7 +11,7 @@ from django.urls import reverse_lazy
 from django.forms import fields, models as model_fields, widgets
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _, ungettext_lazy
+from django.utils.translation import gettext_lazy as _, ngettext_lazy
 
 from djng import app_settings
 from .widgets import DropFileWidget, DropImageWidget
@@ -43,13 +43,13 @@ class DefaultFieldMixin(object):
             self.widget.attrs['ng-maxlength'] = self.max_length
         for item in self.validators:
             if getattr(item, 'code', None) == 'min_length':
-                message = ungettext_lazy(
+                message = ngettext_lazy(
                     'Ensure this value has at least %(limit_value)d character',
                     'Ensure this value has at least %(limit_value)d characters',
                     'limit_value')
                 errors.append(('$error.minlength', message % {'limit_value': self.min_length}))
             if getattr(item, 'code', None) == 'max_length':
-                message = ungettext_lazy(
+                message = ngettext_lazy(
                     'Ensure this value has at most %(limit_value)d character',
                     'Ensure this value has at most %(limit_value)d characters',
                     'limit_value')

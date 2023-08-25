@@ -7,7 +7,7 @@ from django.forms import forms
 from django.forms.boundfield import BoundField
 from django.http import QueryDict
 from django.utils.html import format_html, format_html_join, escape, conditional_escape
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.module_loading import import_string
 from django.utils.safestring import mark_safe, SafeText, SafeData
 from django.core.exceptions import ValidationError, ImproperlyConfigured
@@ -37,7 +37,7 @@ class TupleErrorList(UserList, list):
     5: The desired error message. If this contains the magic word '$message' it will be added with
        ``ng-bind`` rather than rendered inside the list item.
     """
-    def __init__(self, initlist=None, error_class=None):
+    def __init__(self, initlist=None, error_class=None, **kwargs):
         super(TupleErrorList, self).__init__(initlist)
 
         if error_class is None:
@@ -85,7 +85,7 @@ class TupleErrorList(UserList, list):
                     li_format = '<li ng-show="{0}.{1} && {0}.{3}" class="{2}" ng-bind="{0}.{3}"></li>'
                 else:
                     li_format = '<li ng-show="{0}.{1}" class="{2}">{3}</li>'
-                err_tuple = (e[0], e[3], e[4], force_text(e[5]))
+                err_tuple = (e[0], e[3], e[4], force_str(e[5]))
                 error_lists[e[2]].append(format_html(li_format, *err_tuple))
             # renders and combine both of these lists
             dirty_errors, pristine_errors = '', ''
@@ -101,22 +101,22 @@ class TupleErrorList(UserList, list):
                 )
             return format_html('{}{}', dirty_errors, pristine_errors)
         return format_html('<ul class="errorlist">{0}</ul>',
-            format_html_join('', '<li>{0}</li>', ((force_text(e),) for e in self)))
+            format_html_join('', '<li>{0}</li>', ((force_str(e),) for e in self)))
 
     def as_text(self):
         if not self:
             return ''
         if isinstance(self[0], tuple):
-            return '\n'.join(['* %s' % force_text(e[5]) for e in self if bool(e[5])])
-        return '\n'.join(['* %s' % force_text(e) for e in self])
+            return '\n'.join(['* %s' % force_str(e[5]) for e in self if bool(e[5])])
+        return '\n'.join(['* %s' % force_str(e) for e in self])
 
     def __str__(self):
         return self.as_ul()
 
     def __repr__(self):
         if self and isinstance(self[0], tuple):
-            return repr([force_text(e[5]) for e in self])
-        return repr([force_text(e) for e in self])
+            return repr([force_str(e[5]) for e in self])
+        return repr([force_str(e) for e in self])
 
     def __contains__(self, item):
         return item in list(self)
@@ -135,7 +135,7 @@ class TupleErrorList(UserList, list):
             return error
         if isinstance(error, ValidationError):
             return list(error)[0]
-        return force_text(error)
+        return force_str(error)
 
 
 class NgWidgetMixin(object):

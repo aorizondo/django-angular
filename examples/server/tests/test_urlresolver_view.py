@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import six
 
-from django.conf.urls import url, include
+from django.urls import re_path as url, include 
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.http import QueryDict

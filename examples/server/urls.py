@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import url
+from django.urls import re_path as url 
 from django.urls import reverse_lazy
 from django.views.generic import RedirectView
 from djng.views.upload import FileUploadView
